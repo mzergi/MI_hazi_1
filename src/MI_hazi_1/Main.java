@@ -14,19 +14,19 @@ public class Main {
         Scanner in = new Scanner(System.in);
 
         String s = in.nextLine();
-        String comps[] = s.split("\\t");
+        String comps[] = s.split("\\s+");
 
         storageHeight = Integer.parseInt(comps[0]);
         storageWidth = Integer.parseInt(comps[1]);
 
 
         s = in.nextLine();
-        comps = s.split("\\t");
+        comps = s.split("\\s+");
 
         numberOfPillars = Integer.parseInt(comps[0]);
 
         s = in.nextLine();
-        comps = s.split("\\t");
+        comps = s.split("\\s+");
 
         numberOfPallets = Integer.parseInt(comps[0]);
         pallets = new Pallet[numberOfPallets];
@@ -34,7 +34,7 @@ public class Main {
 
         for(int i = 0; i < numberOfPillars; i++){
             s = in.nextLine();
-            comps = s.split("\\t");
+            comps = s.split("\\s+");
             pillars[i] = new Pillar(new Point(Integer.parseInt(comps[0])-1, Integer.parseInt(comps[1])-1));
         }
 
@@ -42,7 +42,7 @@ public class Main {
 
         for(int i = 0; i < numberOfPallets; i++){
             s = in.nextLine();
-            comps = s.split("\\t");
+            comps = s.split("\\s+");
             pallets[i] = new Pallet(new Dimension(Integer.parseInt(comps[0]), Integer.parseInt(comps[1])), i+1);
         }
 

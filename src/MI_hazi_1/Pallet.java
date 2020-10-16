@@ -17,4 +17,17 @@ public class Pallet {
     public int getId() {
         return id;
     }
+
+    public void rotate (){
+        int tmp = dimension.getHeight();
+        dimension.setHeight(dimension.getWidth());
+        dimension.setWidth(tmp);
+    }
+    public int getArea(){
+        return dimension.getHeight() * dimension.getWidth();
+    }
+    public static boolean comparePallet(Pallet x, Pallet y){
+        if(x.getArea() > y.getArea()) return true;
+        else return false;
+    }
 }
