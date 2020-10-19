@@ -57,7 +57,6 @@ public class Storage {
         Collections.reverse(palletList);
         int tryNumber = 0;
         //ORDER BY AREA
-        palletList = palletList;
         //for each package FIND A PLACE starting from BIGGEST
         while(!checkDoneList(doneList)) {
             doneList = placingAlgorithm(palletList);
@@ -68,6 +67,10 @@ public class Storage {
                 //change done list to true if we could place something on the second go
                 //return changed list
                 ////////////////////////////////////
+                doneList = followUpAlgorithm(palletList,doneList);
+                if(checkDoneList(doneList)){
+                    break;
+                }
                 writeStorage();
                 System.out.println("//////////////////////////////////////////////////////////////////////////");
                 System.out.println("//////////////////////////////////////////////////////////////////////////");
@@ -83,6 +86,46 @@ public class Storage {
                 tryNumber++;
             }
         }
+    }
+    private ArrayList<Boolean> followUpAlgorithm(ArrayList pallets, ArrayList done){
+        ArrayList<Pallet> palletList = new ArrayList<>();
+        palletList.addAll(pallets);
+        ArrayList<Boolean> doneList = new ArrayList<>();
+        doneList.addAll(done);
+        for(int k = 0; k<doneList.size();k++){
+            Boolean b = doneList.get(k);
+            if(!b){
+                Pallet p = palletList.get(k);
+                boolean found = false;
+                for (int i = 0; i < dimension.getHeight(); i++) {
+                    for (int j = 0; j < dimension.getWidth(); j++) {
+                        found = findPlace(p, new Point(j, i));
+                        if (found) {
+                            doneList.set(k,true);
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+                if (!found) {
+                    p.rotate();
+                    for (int i = 0; i < dimension.getHeight(); i++) {
+                        for (int j = 0; j < dimension.getWidth(); j++) {
+                            found = findPlace(p, new Point(j, i));
+                            if (found) {
+                                doneList.set(k, true);
+                                break;
+                            }
+                        }
+                        if (found) break;
+                    }
+                }
+                if(!found){
+                    doneList.set(k, false);
+                }
+            }
+        }
+        return doneList;
     }
     private ArrayList<Boolean> placingAlgorithm(ArrayList pallets){
         ArrayList<Pallet> palletList = pallets;
@@ -176,10 +219,12 @@ public class Storage {
                     if (matrix [checkY+i][checkX+j] != 0) free = false;
                 }
             }
-            if (!(checkY == 0 || checkX == 0 || checkY == dimension.getHeight() || checkX == dimension.getWidth())) {
-                for (Pillar pillar : pillars) {
-                    if (pillar.getPos().getX() == checkX && pillar.getPos().getY() == checkY) {
-                        free = false;
+            for (Pillar pillar : pillars) {
+                for(int i = 0; i < p.getDimension().getHeight()-1; i++){
+                    for(int j = 0; j < p.getDimension().getWidth()-1; j++){
+                        if((pillar.getPos().getX() == checkX + j) && (pillar.getPos().getY() == checkY + i)){
+                                free = false;
+                        }
                     }
                 }
             }

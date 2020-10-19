@@ -35,7 +35,7 @@ public class Main {
         for(int i = 0; i < numberOfPillars; i++){
             s = in.nextLine();
             comps = s.split("\\s+");
-            pillars[i] = new Pillar(new Point(Integer.parseInt(comps[0])-1, Integer.parseInt(comps[1])-1));
+            pillars[i] = new Pillar(new Point(Integer.parseInt(comps[1])-1, Integer.parseInt(comps[0])-1));
         }
 
         storage = new Storage(storageWidth, storageHeight, pillars);
